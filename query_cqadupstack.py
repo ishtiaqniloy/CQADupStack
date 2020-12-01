@@ -946,7 +946,7 @@ class Subforum():
         newlist = zip(reversed(range(len(codes))), reversed(codes))
         for i, c in newlist:
             # Escaping here leads to backslashes being added in the code blocks.
-            s = re.sub('hhhh' + str(i), c.encode('unicode-escape'), str(s))
+            s = re.sub('hhhh' + str(i), c.encode('unicode-escape').decode(), str(s))
         return s
 
     #################
