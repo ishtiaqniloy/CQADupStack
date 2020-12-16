@@ -1356,7 +1356,7 @@ class Subforum():
 
         return sum(recall_at_list) / len(recall_at_list)
 
-    def average_precision_at(self, scorefile, cutoff=None, include_related_posts=False):
+    def average_precision_at(self, scorefile, cutoff=5, include_related_posts=False):
         ''' Takes a file with scores and optionally a cutoff point as input and returns the Average Precision (at this cutoff, if specified). 
             If the optional argument 'include_related_posts' is set to True, then related posts are treated as half relevant.
             Only queries with relevant posts are taken into account. Queries with ONLY related posts are ignored, even with include_related_posts=True, to make the scores better comparable. '''
@@ -1753,6 +1753,10 @@ if __name__ == "__main__":
 
     cqad_object = load_subforum(INPUT_DIR + FORUM_NAME + '.zip')
 
-    print(cqad_object.average_ndcg_at("tex_scorefile.txt"))
+    score_file = 'tex_scorefile.txt'
+
+    print('Forum =', FORUM_NAME, 'nDCG =', cqad_object.average_ndcg_at(score_file))
+    print('Forum =', FORUM_NAME, 'MAP =', cqad_object.mean_average_precision(score_file))
+    print('Forum =', FORUM_NAME, 'P@10 =', cqad_object.average_precision_at(score_file))
 
 
