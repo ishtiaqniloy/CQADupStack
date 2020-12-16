@@ -1252,7 +1252,7 @@ class Subforum():
             relateddocs.append(relstofind)
         return rankings, relevantdocs, relateddocs
 
-    def average_ndcg_at(self, scorefile, cutoff=None, include_related_posts=False):
+    def average_ndcg_at(self, scorefile, cutoff=5, include_related_posts=False):
         ''' Takes a file with scores and a cutoff point as input and returns the Normalised Discounted Cumulative Gain at the cutoff point. The default is 10.
             If the optional argument 'include_related_posts' is set to True, then related posts are treated as half relevant. 
             See "Cumulated Gain-based Evaluation of IR Techniques" by Jarvelin and Kekalainen 2002 for more information on this metric.
@@ -1287,7 +1287,7 @@ class Subforum():
                 DCG_I = self._get_DCG(I)
 
                 try:
-                    nDCG = map(truediv, DCG, DCG_I)
+                    nDCG = list(map(truediv, DCG, DCG_I))
                 except ZeroDivisionError:  # Can lead to ZeroDivisionError if you use queries that don't have any duplicates. Although the metric does not make sense in that scenario.
                     nDCG = []
                     for i, v in enumerate(DCG):
@@ -1297,7 +1297,7 @@ class Subforum():
                             nDCG.append(v/DCG_I[i])
 
                 # This is the same as round(sum(nDCG) * len(nDCG) ** -1, 4)
-                av_nDCG = round(sum(nDCG) / float(len(nDCG)), 4)
+                av_nDCG = round(sum(nDCG) / len(list(nDCG)))
                 ndcgs_at_cutoff.append(av_nDCG)
 
         return sum(ndcgs_at_cutoff) / len(ndcgs_at_cutoff)
@@ -1743,7 +1743,16 @@ def usage():
 
 # -------------------------------
 if __name__ == "__main__":
-    if len(sys.argv[1:]) != 1:
-        usage()
-    else:
-        main(sys.argv[1])
+    # if len(sys.argv[1:]) != 1:
+    #     usage()
+    # else:
+    #     main(sys.argv[1])
+
+    INPUT_DIR = "../cqadupstack/"
+    FORUM_NAME = "tex"
+
+    cqad_object = load_subforum(INPUT_DIR + FORUM_NAME + '.zip')
+
+    print(cqad_object.average_ndcg_at("tex_scorefile.txt"))
+
+
