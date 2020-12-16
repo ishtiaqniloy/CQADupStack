@@ -1252,7 +1252,7 @@ class Subforum():
             relateddocs.append(relstofind)
         return rankings, relevantdocs, relateddocs
 
-    def average_ndcg_at(self, scorefile, cutoff=5, include_related_posts=False):
+    def average_ndcg_at(self, scorefile, cutoff=10, include_related_posts=False):
         ''' Takes a file with scores and a cutoff point as input and returns the Normalised Discounted Cumulative Gain at the cutoff point. The default is 10.
             If the optional argument 'include_related_posts' is set to True, then related posts are treated as half relevant. 
             See "Cumulated Gain-based Evaluation of IR Techniques" by Jarvelin and Kekalainen 2002 for more information on this metric.
@@ -1356,7 +1356,7 @@ class Subforum():
 
         return sum(recall_at_list) / len(recall_at_list)
 
-    def average_precision_at(self, scorefile, cutoff=5, include_related_posts=False):
+    def average_precision_at(self, scorefile, cutoff=10, include_related_posts=False):
         ''' Takes a file with scores and optionally a cutoff point as input and returns the Average Precision (at this cutoff, if specified). 
             If the optional argument 'include_related_posts' is set to True, then related posts are treated as half relevant.
             Only queries with relevant posts are taken into account. Queries with ONLY related posts are ignored, even with include_related_posts=True, to make the scores better comparable. '''
